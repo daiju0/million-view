@@ -1,8 +1,8 @@
-// USD/JPY を取得して表示（APIキー不要 & CORS対応）
+// USD/JPY 為替レートを取得して表示（APIキー不要）
 
 async function loadForex() {
   try {
-    const res = await fetch("https://open.er-api.com/v6/latest/USD");
+    const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=JPY");
     const data = await res.json();
     const price = data.rates.JPY;
 
@@ -14,6 +14,8 @@ async function loadForex() {
   }
 }
 
-// 10分ごとに更新
+// 初回実行
 loadForex();
+
+// 10分ごとに自動更新
 setInterval(loadForex, 600000);
