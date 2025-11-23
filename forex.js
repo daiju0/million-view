@@ -1,20 +1,19 @@
-// USD/JPY 為替レートを取得して表示する（APIキー不要）
+// USD/JPY を取得して表示（APIキー不要 & CORS対応）
 
 async function loadForex() {
   try {
-    const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=JPY");
-
+    const res = await fetch("https://open.er-api.com/v6/latest/USD");
     const data = await res.json();
     const price = data.rates.JPY;
 
     document.getElementById("forex").textContent =
-      `USD/JPY：${price} 円`;
+      `USD/JPY: ${price} 円`;
   } catch (e) {
     document.getElementById("forex").textContent =
       "取得できませんでした";
   }
 }
 
-// 10分ごとに自動更新
+// 10分ごとに更新
 loadForex();
 setInterval(loadForex, 600000);
