@@ -2,90 +2,47 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>世界ニュース速報</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最新レート & ニュース</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fafafa;
-      color: #111;
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
     }
-    header {
-      background: #111;
-      color: #fff;
-      padding: 16px;
-      text-align: center;
-      font-size: 22px;
+    h1 { font-size: 32px; margin-bottom: 10px; }
+    h2 { margin-top: 40px; }
+    .rate-box {
+      font-size: 28px;
       font-weight: bold;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: inline-block;
     }
-    nav {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 10px 16px;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-    }
-    nav a {
-      padding: 6px 14px;
-      background: #eee;
-      border-radius: 6px;
-      text-decoration: none;
-      color: #111;
-      font-size: 15px;
-      white-space: nowrap;
-    }
-    .section {
-      padding: 18px;
-    }
-    h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .rate, .btc {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-    .news-item {
-      padding: 12px 0;
-      border-bottom: 1px solid #ddd;
-    }
-    .news-item a {
-      text-decoration: none;
-      color: #007aff;
-      font-size: 17px;
-    }
+    ul { padding-left: 16px; }
+    li { margin-bottom: 12px; }
+    a { text-decoration: none; color: #0066ff; }
   </style>
 </head>
 
 <body>
 
-  <header>世界ニュース速報</header>
+  <h1>最新レート & ニュース</h1>
 
-  <nav>
-    <a href="/">TOP</a>
-    <a href="#forex">為替</a>
-    <a href="#bitcoin">ビットコイン</a>
-    <a href="#news">最新ニュース</a>
-  </nav>
+  <!-- ✅ 為替レート表示 -->
+  <h2>USD/JPY 為替レート</h2>
+  <div id="forex" class="rate-box">読み込み中...</div>
 
-  <div class="section">
-    <h2 id="forex">為替レート</h2>
-    <div class="rate">取得中...</div>
+  <!-- ✅ ニュース表示 -->
+  <h2>最新ニュース</h2>
+  <ul id="news-list"></ul>
 
-    <h2 id="bitcoin">ビットコイン</h2>
-    <div class="btc">取得中...</div>
-  </div>
-
-  <div class="section" id="news">
-    <h2>最新ニュース</h2>
-    <div id="news-list">読み込み中...</div>
-  </div>
-
-  <script src="rates.js"></script>
+  <!-- ✅ JavaScript 読み込み -->
+  <script src="forex.js"></script>
   <script src="news.js"></script>
 
 </body>
