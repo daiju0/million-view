@@ -2,11 +2,10 @@
 
 async function loadForex() {
   try {
-    const res = await fetch(
-      "https://query1.finance.yahoo.com/v7/finance/quote?symbols=USDJPY=X"
-    );
+    const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=JPY");
+
     const data = await res.json();
-    const price = data.quoteResponse.result[0].regularMarketPrice;
+    const price = data.rates.JPY;
 
     document.getElementById("forex").textContent =
       `USD/JPY：${price} 円`;
