@@ -1,68 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>最新レート & ニュース</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>最新レート＆ニュース</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 30px;
-      background: #fafafa;
-    }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    .rate {
-      font-size: 26px;
-      font-weight: bold;
-      margin: 20px 0 40px;
-    }
-    .news-item {
-      margin: 12px 0;
-      font-size: 18px;
-    }
-    a {
-      color: #0078ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    nav {
-      margin-bottom: 40px;
-    }
-    nav a {
-      margin: 0 12px;
-      font-size: 18px;
-      font-weight: bold;
-    }
+    body { font-family: Arial; padding: 20px; text-align: center; }
+    nav a { margin: 0 10px; font-weight: bold; color: #007bff; text-decoration: none; }
+    .news-item { margin: 10px 0; }
   </style>
-
-<script>
-async function loadForex() {
-  try {
-    const res = await fetch("/forex");
-    const data = await res.json();
-
-    document.getElementById("forex").textContent =
-      `USD/JPY: ${data.price} 円`;
-  } catch (e) {
-    document.getElementById("forex").textContent =
-      "取得できませんでした";
-  }
-}
-
-// 初回実行
-loadForex();
-// 10分ごとに更新
-setInterval(loadForex, 600000);
-</script>
-
-
 </head>
 <body>
 
@@ -73,10 +19,13 @@ setInterval(loadForex, 600000);
   </nav>
 
   <h1>USD/JPY 為替レート</h1>
-  <div id="forex" class="rate">読み込み中...</div>
+  <h2 id="forex">読み込み中…</h2>
 
   <h2>最新ニュース（自動更新）</h2>
-  <div id="news">読み込み中...</div>
+  <div id="news">読み込み中…</div>
 
-</body>
-</html>
+  <script>
+    async function loadForex() {
+      try {
+        const
+
