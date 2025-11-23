@@ -14,31 +14,36 @@
 </head>
 <body>
 
-<h1>🌎 世界ニュース速報</h1>
+<h1>🌎 世界ニュース速報（NHK公式）</h1>
 <div id="news">読み込み中...</div>
 
 <script>
 async function loadNews() {
   try {
-    const res = await fetch("https://newsdata.io/api/1/news?country=jp&category=world&language=ja");
-    const data = await res.json();
+    const res = await fetch("https://www3.nhk.or.jp/rss/news/cat6.xml");
+    const text = await res.text();
 
-    const items = data.results.slice(0, 10); // 最新10件
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, "application/xml");
+    const items = [...xml.querySelectorAll("item")].slice(0, 10);
 
     document.getElementById("news").innerHTML =
       items.map(n => `
         <div class="item">
-          <a href="${n.link}" target="_blank">${n.title}</a>
-          <div class="time">${n.pubDate}</div>
+          <a href="${n.querySelector("link").textContent}" target="_blank">
+            ${n.querySelector("title").textContent}
+          </a>
+          <div class="time">${n.querySelector("pubDate").textContent}</div>
         </div>
       `).join("");
+
   } catch (e) {
     document.getElementById("news").textContent = "取得できませんでした";
   }
 }
 
 loadNews();
-setInterval(loadNews, 600000); // 10分ごとに更新
+setInterval(loadNews, 600000);
 </script>
 
 </body>
