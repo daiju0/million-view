@@ -42,48 +42,26 @@
     }
   </style>
 
-  <script>
-    // ✅ 為替レート取得（functions/forex.js を呼ぶ）
-    async function loadForex() {
-      try {
-        const res = await fetch("/forex");
-        const data = await res.json();
+<script>
+async function loadForex() {
+  try {
+    const res = await fetch("/forex");
+    const data = await res.json();
 
-        document.getElementById("forex").textContent =
-          `USD/JPY: ${data.price} 円`;
-      } catch {
-        document.getElementById("forex").textContent =
-          "取得できませんでした";
-      }
-    }
+    document.getElementById("forex").textContent =
+      `USD/JPY: ${data.price} 円`;
+  } catch (e) {
+    document.getElementById("forex").textContent =
+      "取得できませんでした";
+  }
+}
 
-    // ✅ ニュース取得（functions/news.js を呼ぶ）
-    async function loadNews() {
-      try {
-        const res = await fetch("/news");
-        const data = await res.json();
+// 初回実行
+loadForex();
+// 10分ごとに更新
+setInterval(loadForex, 600000);
+</script>
 
-        const list = document.getElementById("news");
-
-        list.innerHTML = data.articles
-          .map(item => `<div class="news-item">
-            <a href="${item.link}" target="_blank">${item.title}</a>
-          </div>`)
-          .join("");
-      } catch {
-        document.getElementById("news").innerHTML =
-          "ニュースを取得できませんでした";
-      }
-    }
-
-    // ✅ 初回実行
-    loadForex();
-    loadNews();
-
-    // ✅ 定期更新（10分ごと）
-    setInterval(loadForex, 600000);
-    setInterval(loadNews, 600000);
-  </script>
 
 </head>
 <body>
