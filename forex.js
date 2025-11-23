@@ -1,21 +1,15 @@
-// USD/JPY 為替レートを取得して表示（APIキー不要）
+// USD/JPY を Cloudflare がサーバー側で取得して返す
 
-async function loadForex() {
-  try {
-    const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=JPY");
-    const data = await res.json();
-    const price = data.rates.JPY;
+export async function onRequest() {
+  const res = await fetch(
+    "https://open.er-api.com/v6/latest/USD"
+  );
+  const data = await res.json();
 
-    document.getElementById("forex").textContent =
-      `USD/JPY: ${price} 円`;
-  } catch (e) {
-    document.getElementById("forex").textContent =
-      "取得できませんでした";
-  }
+  const price = data.rates.JPY;
+
+  return new Response(
+    JSON.stringify({ usd_jpy: price }),
+    { headers: { "Content-Type": "application/json" } }
+  );
 }
-
-// 初回実行
-loadForex();
-
-// 10分ごとに自動更新
-setInterval(loadForex, 600000);
