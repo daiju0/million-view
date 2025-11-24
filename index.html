@@ -1,54 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>最新レート & ニュース</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 20px;
-      line-height: 1.6;
-    }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-    h2 {
-      font-size: 22px;
-      margin-top: 30px;
-    }
-  </style>
 </head>
 <body>
-
   <h1>最新レート & ニュース</h1>
 
   <h2>USD/JPY レート</h2>
-  <div id="rate">読み込み中…</div>
+  <div id="rate">読み込み中...</div>
 
   <h2>最新ニュース</h2>
-  <div id="news">読み込み中…</div>
+  <div id="news">読み込み中...</div>
 
   <script>
     async function loadData() {
       try {
-        // ✅ 為替（functions/forex）
+        // 為替
         const rateRes = await fetch("/functions/forex");
         const rateData = await rateRes.json();
         document.getElementById("rate").textContent =
           rateData.price ? `${rateData.price} 円` : "取得できませんでした";
 
-        // ✅ ニュース（functions/news）
+        // ニュース
         const newsRes = await fetch("/functions/news");
         const newsData = await newsRes.json();
-
         if (newsData.items && newsData.items.length > 0) {
-          document.getElementById("news").innerHTML = newsData.items
-            .map(item => `・${item.title}`)
-            .join("<br>");
+          document.getElementById("news").innerHTML =
+            newsData.items.map(i => `・${i.title}`).join("<br>");
         } else {
-          document.getElementById("news").textContent = "ニュースを取得できませんでした";
+          document.getElementById("news").textContent =
+            "ニュースを取得できませんでした";
         }
 
       } catch (e) {
@@ -59,6 +41,5 @@
 
     loadData();
   </script>
-
 </body>
 </html>
