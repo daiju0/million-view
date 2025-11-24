@@ -2,42 +2,63 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>最新レート</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>最新レート & ニュース</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 40px 20px;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 16px;
-    }
-    #forex {
-      font-size: 22px;
-      font-weight: bold;
-      margin-top: 16px;
-    }
-    .note {
-      margin-top: 24px;
-      font-size: 13px;
-      color: #666;
-    }
+    body { font-family: sans-serif; padding: 40px; }
+    h1 { font-size: 32px; margin-bottom: 20px; }
+    .section { margin-bottom: 40px; }
   </style>
 </head>
 <body>
-  <h1>USD/JPY 為替レート</h1>
 
-  <div id="forex">読み込み中...</div>
+  <h1>最新レート & ニュース</h1>
 
-  <div class="note">
-    ※ 1分ごとに自動更新（データ元：exchangerate.host）
+  <div class="section">
+    <h2>USD/JPY 為替レート</h2>
+    <p id="rate">読み込み中…</p>
   </div>
 
-  <script src="forex.js"></script>
+  <div class="section">
+    <h2>最新ニュース</h2>
+    <ul id="news">読み込み中…</ul>
+  </div>
+
+<script>
+async function loadRate() {
+  try {
+    const res = await fetch("/functions/forex");
+    const data = await res.json();
+    document.getElementById("rate").textContent =
+      data.price ? `${data.price} 円` : "取得できませんでした";
+  } catch {
+    document.getElementById("rate").textContent = "取得できませんでした";
+  }
+}
+
+async function loadNews() {
+  try {
+    const res = await fetch("/functions/news");
+    const data = await res.json();
+    const list = document.getElementById("news");
+
+    if (!data.news || data.news.length === 0) {
+      list.textContent = "ニュースを取得できませんでした";
+      return;
+    }
+
+    list.innerHTML = data.news
+      .map(item => `<li>${item}</li>`)
+      .join("");
+  } catch {
+    document.getElementById("news").textContent =
+      "ニュースを取得できませんでした";
+  }
+}
+
+loadRate();
+loadNews();
+</script>
+
 </body>
 </html>
 
