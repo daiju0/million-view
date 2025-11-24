@@ -1,4 +1,3 @@
-// ✅ Cloudflare が USD/JPY を取得して返す
 export async function onRequest() {
   try {
     const res = await fetch("https://open.er-api.com/v6/latest/USD");
@@ -9,7 +8,7 @@ export async function onRequest() {
       JSON.stringify({ price }),
       { headers: { "Content-Type": "application/json" } }
     );
-  } catch {
+  } catch (e) {
     return new Response(
       JSON.stringify({ error: "failed" }),
       { status: 500 }
