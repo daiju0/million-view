@@ -1,17 +1,17 @@
+// USD/JPY を Cloudflare Functions 経由で返す
+
 export async function onRequest() {
   try {
-    const res = await fetch("https://www3.nhk.or.jp/rss/news/cat0.xml");
-    const xml = await res.text();
+    const res = await fetch("https://open.er-api.com/v6/latest/USD");
+    const data = await res.json();
 
-    const items = [...xml.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
-      .slice(1, 6)
-      .map(m => m[1]);
+    const price = data.rates.JPY;
 
     return new Response(
-      JSON.stringify({ news: items }),
+      JSON.stringify({ price }),
       { headers: { "Content-Type": "application/json" } }
     );
-  } catch {
+  } catch (e) {
     return new Response(
       JSON.stringify({ error: "failed" }),
       { status: 500 }
