@@ -1,14 +1,14 @@
+// 簡易ニュース（テスト用）Cloudflare 経由で返す
+
 export async function onRequest() {
   try {
-    const res = await fetch("https://www3.nhk.or.jp/rss/news/cat0.xml");
-    const xml = await res.text();
-
-    const items = [...xml.matchAll(/<title><!\[CDATA\[(.*?)\]\]><\/title>/g)]
-      .slice(1, 6)
-      .map(m => m[1]);
-
     return new Response(
-      JSON.stringify({ news: items }),
+      JSON.stringify({
+        items: [
+          { title: "ニュース１（テスト）" },
+          { title: "ニュース２（テスト）" }
+        ]
+      }),
       { headers: { "Content-Type": "application/json" } }
     );
   } catch (e) {
