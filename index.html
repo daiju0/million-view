@@ -2,56 +2,39 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>最新レート & ニュース</title>
+  <title>最新レート＆ニュース</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: sans-serif; padding: 40px; }
-    h1 { font-size: 28px; margin-bottom: 24px; }
-    .block { margin-bottom: 40px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      font-weight: 600;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+  <h1>最新レート ＆ ニュース</h1>
 
-  <h1>最新レート & ニュース</h1>
+  <h2>USD/JPY レート</h2>
+  <div id="forex">読み込み中…</div>
 
-  <div class="block">
-    <h2>USD/JPY 為替レート</h2>
-    <p id="rate">読み込み中…</p>
-  </div>
+  <h2>最新ニュース</h2>
+  <ul id="news-list">読み込み中…</ul>
 
-  <div class="block">
-    <h2>最新ニュース</h2>
-    <ul id="news">読み込み中…</ul>
-  </div>
-
-<script>
-async function loadRate() {
-  try {
-    const res = await fetch("/functions/forex");
-    const data = await res.json();
-    document.getElementById("rate").textContent =
-      `${data.price} 円`;
-  } catch {
-    document.getElementById("rate").textContent =
-      "取得できませんでした";
-  }
-}
-
-async function loadNews() {
-  try {
-    const res = await fetch("/functions/news");
-    const data = await res.json();
-    document.getElementById("news").innerHTML =
-      data.news.map(n => `<li>${n}</li>`).join("");
-  } catch {
-    document.getElementById("news").textContent =
-      "ニュースを取得できませんでした";
-  }
-}
-
-loadRate();
-loadNews();
-</script>
-
+  <!-- レート取得用 -->
+  <script src="forex.js" defer></script>
+  <!-- ニュース取得用 -->
+  <script src="ニュース.js" defer></script>
 </body>
 </html>
 
