@@ -2,39 +2,63 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>最新レート＆ニュース</title>
+  <title>最新レート & ニュース</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 20px;
       line-height: 1.6;
     }
-    h1, h2 {
-      font-weight: 600;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
     }
-    a {
-      color: #0066cc;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+    h2 {
+      font-size: 22px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-  <h1>最新レート ＆ ニュース</h1>
+
+  <h1>最新レート & ニュース</h1>
 
   <h2>USD/JPY レート</h2>
-  <div id="forex">読み込み中…</div>
+  <div id="rate">読み込み中…</div>
 
   <h2>最新ニュース</h2>
-  <ul id="news-list">読み込み中…</ul>
+  <div id="news">読み込み中…</div>
 
-  <!-- レート取得用 -->
-  <script src="forex.js" defer></script>
-  <!-- ニュース取得用 -->
-  <script src="ニュース.js" defer></script>
+  <script>
+    async function loadData() {
+      try {
+        // ✅ 為替（functions/forex）
+        const rateRes = await fetch("/functions/forex");
+        const rateData = await rateRes.json();
+        document.getElementById("rate").textContent =
+          rateData.price ? `${rateData.price} 円` : "取得できませんでした";
+
+        // ✅ ニュース（functions/news）
+        const newsRes = await fetch("/functions/news");
+        const newsData = await newsRes.json();
+
+        if (newsData.items && newsData.items.length > 0) {
+          document.getElementById("news").innerHTML = newsData.items
+            .map(item => `・${item.title}`)
+            .join("<br>");
+        } else {
+          document.getElementById("news").textContent = "ニュースを取得できませんでした";
+        }
+
+      } catch (e) {
+        document.getElementById("rate").textContent = "取得できませんでした";
+        document.getElementById("news").textContent = "ニュースを取得できませんでした";
+      }
+    }
+
+    loadData();
+  </script>
+
 </body>
 </html>
-
