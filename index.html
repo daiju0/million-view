@@ -2,52 +2,42 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
+  <title>最新レート</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>最新レート & ニュース</title>
-
-  <script>
-    async function loadForex() {
-      try {
-        const res = await fetch("/functions/forex");
-        const data = await res.json();
-        document.getElementById("forex").textContent =
-          `USD/JPY: ${data.price} 円`;
-      } catch {
-        document.getElementById("forex").textContent =
-          "取得できませんでした";
-      }
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.7;
     }
-
-    async function loadNews() {
-      try {
-        const res = await fetch("/functions/news");
-        const data = await res.json();
-
-        const list = document.getElementById("news");
-        list.innerHTML = "";
-
-        data.articles.forEach(item => {
-          const div = document.createElement("div");
-          div.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
-          list.appendChild(div);
-        });
-
-      } catch {
-        document.getElementById("news").innerHTML =
-          "ニュースを取得できませんでした";
-      }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
     }
-
-    loadForex();
-    loadNews();
-  </script>
+    #forex {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+    .note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
 </head>
-
 <body>
-  <h1>最新レート & ニュース</h1>
-  <div id="forex">読み込み中…</div>
+  <h1>USD/JPY 為替レート</h1>
 
-  <h2>最新ニュース</h2>
-  <div id="news">読み込み中…</div>
+  <div id="forex">読み込み中...</div>
+
+  <div class="note">
+    ※ 1分ごとに自動更新（データ元：exchangerate.host）
+  </div>
+
+  <script src="forex.js"></script>
 </body>
 </html>
+
