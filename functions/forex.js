@@ -8,7 +8,7 @@ export async function onRequest() {
       JSON.stringify({ price }),
       { headers: { "Content-Type": "application/json" } }
     );
-  } catch (e) {
+  } catch {
     return new Response(
       JSON.stringify({ error: "failed" }),
       { status: 500 }
