@@ -23,7 +23,11 @@
         `${rateData.rates.USD} 円`;
 
       // ニュース（外部APIに変更済み）
-      const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_33809d72518c24d049930f1c409827ee73689&q=Japan");
+     const newsRes = await fetch(
+  "https://api.allorigins.win/raw?url=" +
+    encodeURIComponent("https://newsdata.io/api/1/news?apikey=pub_33809d72518c24d049930f1c409827ee73689&q=Japan")
+);
+
       const newsData = await newsRes.json();
 
       if (newsData.results && newsData.results.length > 0) {
