@@ -14,47 +14,34 @@
     <div id="news">読み込み中...</div>
 
 <script>
-async function loadData() {
+  async function loadData() {
     try {
-        // ★ 為替
-        const rateRes = await fetch("https://open.er-api.com/v6/latest/JPY");
-        const rateData = await rateRes.json();
-        const usdJpy = (1 / rateData.rates.USD).toFixed(2);
-        document.getElementById("rate").textContent =
-            `${usdJpy} 円`;
+      // レート
+      const rateRes = await fetch("https://api.exchangerate-api.com/v4/latest/JPY");
+      const rateData = await rateRes.json();
+      document.getElementById("rate").textContent =
+        `${rateData.rates.USD} 円`;
 
-  // ★ ニュース (CORS完全回避版)
-const url = encodeURIComponent(
-  "https://newsapi.org/v2/top-headlines?country=jp&apiKey=demo"
-);
+      // ニュース（外部APIに変更済み）
+      const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_33809d72518c24d049930f1c409827ee73689&q=Japan");
+      const newsData = await newsRes.json();
 
-const newsRes = await fetch(
-  `https://api.allorigins.win/get?url=${url}`
-);
-
-const data = await newsRes.json();
-const parsed = JSON.parse(data.contents);
-
-if (parsed.articles && parsed.articles.length > 0) {
-  document.getElementById("news").innerHTML =
-    parsed.articles.slice(0, 5).map(a => `・${a.title}`).join("<br>");
-} else {
-  document.getElementById("news").textContent =
-    "ニュースを取得できませんでした";
-}
-
-
-
-
-    } catch (e) {
-        document.getElementById("rate").textContent =
-            "取得できませんでした";
+      if (newsData.results && newsData.results.length > 0) {
+        document.getElementById("news").innerHTML =
+          newsData.results.map(i => `・${i.title}`).join("<br>");
+      } else {
         document.getElementById("news").textContent =
-            "ニュースを取得できませんでした";
-    }
-}
+          "ニュース取得できませんでした";
+      }
 
-loadData();
+    } catch (err) {
+      document.getElementById("news").textContent =
+        "ニュース取得できませんでした";
+    }
+  }
+
+  loadData();
 </script>
+
 </body>
 </html>
