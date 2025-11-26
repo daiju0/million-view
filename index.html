@@ -19,8 +19,9 @@ async function loadData() {
         // ★ 為替
         const rateRes = await fetch("https://open.er-api.com/v6/latest/JPY");
         const rateData = await rateRes.json();
+        const usdJpy = (1 / rateData.rates.USD).toFixed(2);
         document.getElementById("rate").textContent =
-            `${rateData.rates.USD} 円`;
+            `${usdJpy} 円`;
 
         // ★ ニュース
         const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_24422f5bb4c51cd7216e3eb8cb0942859ed1&q=tokyo&language=ja");
