@@ -23,17 +23,20 @@ async function loadData() {
         document.getElementById("rate").textContent =
             `${usdJpy} 円`;
 
-        // ★ ニュース
-        const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_24422f5bb4c51cd7216e3eb8cb0942859ed1&q=tokyo&language=ja");
-        const newsData = await newsRes.json();
+       // ★ ニュース（確実版）
+const newsRes = await fetch(
+  "https://api.currentsapi.services/v1/latest-news?language=jp&apiKey=demo"
+);
+const newsJson = await newsRes.json();
 
-        if (newsData.results && newsData.results.length > 0) {
-            document.getElementById("news").innerHTML =
-                newsData.results.map(i => `${i.title}`).join("<br>");
-        } else {
-            document.getElementById("news").textContent =
-                "ニュースを取得できませんでした";
-        }
+if (newsJson.news && newsJson.news.length > 0) {
+  document.getElementById("news").innerHTML =
+    newsJson.news.slice(0, 5).map(n => `・${n.title}`).join("<br>");
+} else {
+  document.getElementById("news").textContent =
+    "ニュースを取得できませんでした";
+}
+
 
     } catch (e) {
         document.getElementById("rate").textContent =
