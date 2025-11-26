@@ -23,20 +23,26 @@ async function loadData() {
         document.getElementById("rate").textContent =
             `${usdJpy} 円`;
 
-      // ★ ニュース (動作保証済みAPI)
-const newsRes = await fetch(
+  // ★ ニュース (CORS完全回避版)
+const url = encodeURIComponent(
   "https://newsapi.org/v2/top-headlines?country=jp&apiKey=demo"
 );
 
-const newsData = await newsRes.json();
+const newsRes = await fetch(
+  `https://api.allorigins.win/get?url=${url}`
+);
 
-if (newsData.articles && newsData.articles.length > 0) {
+const data = await newsRes.json();
+const parsed = JSON.parse(data.contents);
+
+if (parsed.articles && parsed.articles.length > 0) {
   document.getElementById("news").innerHTML =
-    newsData.articles.slice(0, 5).map(a => `・${a.title}`).join("<br>");
+    parsed.articles.slice(0, 5).map(a => `・${a.title}`).join("<br>");
 } else {
   document.getElementById("news").textContent =
     "ニュースを取得できませんでした";
 }
+
 
 
 
