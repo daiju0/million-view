@@ -1,52 +1,48 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>最新レート & ニュース</title>
+    <meta charset="UTF-8">
+    <title>最新レート & ニュース</title>
 </head>
 <body>
-  <h1>最新レート & ニュース</h1>
+    <h1>最新レート & ニュース</h1>
 
-  <h2>USD/JPY レート</h2>
-  <div id="rate">読み込み中...</div>
+    <h2>USD/JPY レート</h2>
+    <div id="rate">読み込み中...</div>
 
-  
-  <h2>最新ニュース</h2>
-  <div id="news">読み込み中...</div>
+    <h2>最新ニュース</h2>
+    <div id="news">読み込み中...</div>
 
- <script>
+<script>
 async function loadData() {
     try {
-        // ★ 為替レート（USD/JPY）
-        const rateRes = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=JPY");
-        const rateJson = await rateRes.json();
+        // ★ 為替
+        const rateRes = await fetch("https://open.er-api.com/v6/latest/JPY");
+        const rateData = await rateRes.json();
+        document.getElementById("rate").textContent =
+            `${rateData.rates.USD} 円`;
 
-        if (rateJson && rateJson.rates && rateJson.rates.JPY) {
-            const price = rateJson.rates.JPY;
-            document.getElementById("rate").textContent = `${price} 円`;
-        } else {
-            document.getElementById("rate").textContent = "取得できませんでした";
-        }
+        // ★ ニュース
+        const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_24422f5bb4c51cd7216e3eb8cb0942859ed1&q=tokyo&language=ja");
+        const newsData = await newsRes.json();
 
-        // ★ 最新ニュース（NewsAPI無料版の代替）
-        const newsRes = await fetch("https://newsdata.io/api/1/news?apikey=pub_24476e57e4dfdc...&country=jp");
-        const newsJson = await newsRes.json();
-
-        if (newsJson.results && newsJson.results.length > 0) {
+        if (newsData.results && newsData.results.length > 0) {
             document.getElementById("news").innerHTML =
-                newsJson.results.slice(0, 5).map(i => `・${i.title}`).join("<br>");
+                newsData.results.map(i => `${i.title}`).join("<br>");
         } else {
-            document.getElementById("news").textContent = "ニュースを取得できませんでした";
+            document.getElementById("news").textContent =
+                "ニュースを取得できませんでした";
         }
 
     } catch (e) {
-        document.getElementById("rate").textContent = "エラーが発生しました";
-        document.getElementById("news").textContent = "エラーが発生しました";
+        document.getElementById("rate").textContent =
+            "取得できませんでした";
+        document.getElementById("news").textContent =
+            "ニュースを取得できませんでした";
     }
 }
 
 loadData();
 </script>
-
 </body>
 </html>
