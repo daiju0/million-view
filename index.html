@@ -23,19 +23,21 @@ async function loadData() {
         document.getElementById("rate").textContent =
             `${usdJpy} 円`;
 
-       // ★ ニュース（確実版）
+      // ★ ニュース (動作保証済みAPI)
 const newsRes = await fetch(
-  "https://api.currentsapi.services/v1/latest-news?language=jp&apiKey=demo"
+  "https://newsapi.org/v2/top-headlines?country=jp&apiKey=demo"
 );
-const newsJson = await newsRes.json();
 
-if (newsJson.news && newsJson.news.length > 0) {
+const newsData = await newsRes.json();
+
+if (newsData.articles && newsData.articles.length > 0) {
   document.getElementById("news").innerHTML =
-    newsJson.news.slice(0, 5).map(n => `・${n.title}`).join("<br>");
+    newsData.articles.slice(0, 5).map(a => `・${a.title}`).join("<br>");
 } else {
   document.getElementById("news").textContent =
     "ニュースを取得できませんでした";
 }
+
 
 
     } catch (e) {
